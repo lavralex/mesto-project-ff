@@ -4,7 +4,7 @@ const cardsContainer = content.querySelector(".places__list");
 
 function createCard(cardContent, deleteCard) {
   const card = cardTemplate.querySelector(".places__item").cloneNode(true);
-  const cardImage = card.querySelector(".card__image")
+  const cardImage = card.querySelector(".card__image");
   cardImage.setAttribute("src", cardContent.link);
   cardImage.setAttribute("alt", cardContent.name);
   card.querySelector(".card__title").textContent = cardContent.name;
