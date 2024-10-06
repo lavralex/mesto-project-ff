@@ -1,88 +1,40 @@
-const ButtonEditProfile = document.querySelector(".profile__edit-button");
-const buttonAddСard = document.querySelector(".profile__add-button");
-const popupEdit = document.querySelector(".popup_type_edit");
-const popupAddСard = document.querySelector(".popup_type_new-card");
-const popupsWithForm = [popupEdit, popupAddСard];
+function openModal(popup) {
+  popup.classList.remove("popup_is-animated");
+  popup.classList.add("popup_is-opened");
+  HandlerCloseByESC(popup);
+  HandlerCloseByClick(popup);
+}
 
-const popupsButtons = [
-  {
-    popup: popupEdit,
-    button: ButtonEditProfile,
-    buttonClass: "profile__edit-button",
-  },
-  {
-    popup: popupAddСard,
-    button: buttonAddСard,
-    buttonClass: "profile__add-button",
-  },
-];
+function closeModal(popup) {
+  popup.classList.add("popup_is-animated");
+  popup.classList.remove("popup_is-opened");
+  document.removeEventListener("keydown", closeByESC);
+  popup.removeEventListener("click", closeByClick);
+}
 
-function initiateHidePopup(popup) {
-  function hidePopup() {
-    popup.classList.add("popup_is-animated");
-    popup.classList.remove("popup_is-opened");
-    document.removeEventListener("keydown", hidePopupByKeydown);
-    popup.removeEventListener("click", listenClick);
-    if (popupsWithForm.includes(popup)) {
-      popup.removeEventListener("submit", hidePopupBySubmit);
-    }
-  }
+function HandlerCloseByESC() {
+  document.addEventListener("keydown", closeByESC);
+}
 
-  function hidePopupBySubmit() {
-    hidePopup();
-  }
-
-  function listenSubmitToHide() {
-    popup.addEventListener("submit", hidePopupBySubmit);
-  }
-
-  function hidePopupByKeydown(evt) {
-    if (evt.key === "Escape") {
-      hidePopup();
-    }
-  }
-
-  function listenKeydown() {
-    document.addEventListener("keydown", hidePopupByKeydown);
-  }
-
-  function hidePopupByClick(evt) {
-    if (
-      evt.target.classList.contains("popup") ||
-      evt.target.classList.contains("popup__close")
-    ) {
-      hidePopup();
-    }
-  }
-
-  function listenClick() {
-    popup.addEventListener("click", hidePopupByClick);
-  }
-
-  listenClick();
-  listenKeydown();
-  if (popupsWithForm.includes(popup)) {
-    listenSubmitToHide();
+function closeByESC(evt) {
+  const popup = document.querySelector(".popup_is-opened");
+  if (evt.key === "Escape") {
+    closeModal(popup);
   }
 }
 
-function openPopup(popupInfo) {
-  popupInfo.button.addEventListener("click", function (evt) {
-    if (evt.target.classList.contains(popupInfo.buttonClass)) {
-      if (popupInfo.functional) {
-        popupInfo.functional(evt.target);
-      }
-      popupInfo.popup.classList.remove("popup_is-animated");
-      popupInfo.popup.classList.add("popup_is-opened");
-      initiateHidePopup(popupInfo.popup);
-    }
-  });
+function HandlerCloseByClick(popup) {
+  popup.addEventListener("click", closeByClick);
 }
 
-function initPopups() {
-  popupsButtons.forEach((item) => {
-    openPopup(item);
-  });
+function closeByClick(evt) {
+  const popup = document.querySelector(".popup_is-opened");
+  if (
+    evt.target.classList.contains("popup") ||
+    evt.target.classList.contains("popup__close")
+  ) {
+    closeModal(popup);
+  }
 }
 
-export { initPopups, openPopup };
+export { openModal, closeModal };
