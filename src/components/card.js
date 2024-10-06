@@ -1,22 +1,24 @@
 const cardTemplate = document.querySelector("#card-template").content;
-const popupTypeImage = document.querySelector(".popup_type_image");
-const popupImage = document.querySelector(".popup__image");
-const popupCaption = document.querySelector(".popup__caption");
 
-function createCard(cardContent, deleteCard, likeCard, openModal) {
-  const card = cardTemplate.querySelector(".places__item").cloneNode(true);
+function getCardTemplate() {
+  return cardTemplate.querySelector(".places__item").cloneNode(true);
+}
+
+function createCard(
+  cardContent,
+  deleteCard,
+  likeCard,
+  setCardImageClickEventListener
+) {
+  const card = getCardTemplate();
   const cardImage = card.querySelector(".card__image");
+  const cardTitle = card.querySelector(".card__title");
   cardImage.setAttribute("src", cardContent.link);
   cardImage.setAttribute("alt", cardContent.name);
-  card.querySelector(".card__title").textContent = cardContent.name;
+  cardTitle.textContent = cardContent.name;
   deleteCard(card);
   likeCard(card);
-  cardImage.addEventListener("click", () => {
-    popupImage.setAttribute("src", cardContent.link);
-    popupImage.setAttribute("alt", cardContent.name);
-    popupCaption.textContent = cardContent.name;
-    openModal(popupTypeImage);
-  });
+  setCardImageClickEventListener(cardImage, cardContent.name, cardContent.link);
   return card;
 }
 

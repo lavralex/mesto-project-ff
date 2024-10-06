@@ -1,8 +1,8 @@
 function openModal(popup) {
   popup.classList.remove("popup_is-animated");
   popup.classList.add("popup_is-opened");
-  HandlerCloseByESC(popup);
-  HandlerCloseByClick(popup);
+  setCloseByEscListener(popup);
+  setCloseByOverlayClickListener(popup);
 }
 
 function closeModal(popup) {
@@ -12,7 +12,7 @@ function closeModal(popup) {
   popup.removeEventListener("click", closeByClick);
 }
 
-function HandlerCloseByESC() {
+function setCloseByEscListener() {
   document.addEventListener("keydown", closeByESC);
 }
 
@@ -23,7 +23,7 @@ function closeByESC(evt) {
   }
 }
 
-function HandlerCloseByClick(popup) {
+function setCloseByOverlayClickListener(popup) {
   popup.addEventListener("click", closeByClick);
 }
 
