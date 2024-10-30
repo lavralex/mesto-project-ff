@@ -22,10 +22,12 @@ function createCard(
   const cardLikeCounter = card.querySelector(".card__like-counter");
   const deleteButton = card.querySelector(".card__delete-button");
   const likeButton = card.querySelector(".card__like-button");
+
   cardImage.setAttribute("src", cardContent.link);
   cardImage.setAttribute("alt", cardContent.name);
   cardTitle.textContent = cardContent.name;
   cardLikeCounter.textContent = cardContent.likes.length;
+
   if (user["_id"] === cardContent.owner["_id"]) {
     deleteCard(card, cardContent["_id"]);
   } else {
@@ -34,6 +36,7 @@ function createCard(
   if (isUserLiked(cardContent, user)) {
     likeButton.classList.add("card__like-button_is-active");
   }
+
   likeCard(likeButton, user, cardContent, cardLikeCounter);
   setCardImageClickEventListener(cardImage, cardContent.name, cardContent.link);
   return card;
@@ -53,6 +56,7 @@ function submitDelete(evt) {
 
 function deleteCard(card, cardId) {
   const deleteButton = card.querySelector(".card__delete-button");
+  
   deleteButton.addEventListener("click", function () {
     openModal(popupDeleteImage);
     formDeleteImage.card = card;
