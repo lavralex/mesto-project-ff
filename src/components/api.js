@@ -1,14 +1,7 @@
-const config = {
-  authorization: {
-    token: "1c33c7b1-0a31-4a81-aab4-8e1a70c57e3d",
-    cohortId: "wff-cohort-25",
-  },
-  baseUrl: "https://nomoreparties.co/v1",
-  "Content-Type": "application/json",
-};
+import { config } from "../utils/constants.js";
 
 function makeEndpoint(endpoint) {
-  return `${config.baseUrl}/${config.authorization.cohortId}${endpoint}`;
+  return `${config.baseUrl}${endpoint}`;
 }
 
 function checkResponse(res) {
@@ -18,14 +11,17 @@ function checkResponse(res) {
   return Promise.reject(`Ошибка: ${res.status}`);
 }
 
-function get(endpoint) {
-  return fetch(makeEndpoint(endpoint), {
-    headers: {
-      authorization: config.authorization.token,
-    },
-  }).then((res) => {
+function request(url, options) {
+  return fetch(url, options).then((res) => {
     return checkResponse(res);
   });
+}
+
+function get(endpoint) {
+  const options = {
+    headers: config.headers,
+  };
+  return request(makeEndpoint(endpoint), options);
 }
 
 async function getSrartData() {
@@ -41,72 +37,54 @@ async function getSrartData() {
 }
 
 function patchProfile(profileInfo) {
-  return fetch(makeEndpoint("/users/me"), {
+  const options = {
     method: "PATCH",
-    headers: {
-      authorization: config.authorization.token,
-      "Content-Type": config["Content-Type"],
-    },
+    headers: config.headers,
     body: JSON.stringify({
       name: profileInfo.name,
       about: profileInfo.about,
     }),
-  }).then((res) => {
-    return checkResponse(res);
-  });
+  };
+  return request(makeEndpoint("/users/me"), options);
 }
 
 function patchAvatar(avatarLink) {
-  return fetch(makeEndpoint("/users/me/avatar"), {
+  const options = {
     method: "PATCH",
-    headers: {
-      authorization: config.authorization.token,
-      "Content-Type": config["Content-Type"],
-    },
+    headers: config.headers,
     body: JSON.stringify({
       avatar: avatarLink,
     }),
-  }).then((res) => {
-    return checkResponse(res);
-  });
+  };
+  return request(makeEndpoint("/users/me/avatar"), options);
 }
 
 function postCard(name, link) {
-  return fetch(makeEndpoint("/cards"), {
+  const options = {
     method: "POST",
-    headers: {
-      authorization: config.authorization.token,
-      "Content-Type": config["Content-Type"],
-    },
+    headers: config.headers,
     body: JSON.stringify({
       name: name,
       link: link,
     }),
-  }).then((res) => {
-    return checkResponse(res);
-  });
+  };
+  return request(makeEndpoint("/cards"), options);
 }
 
 function deleteCardAPI(cardId) {
-  return fetch(makeEndpoint(`/cards/${cardId}`), {
+  const options = {
     method: "DELETE",
-    headers: {
-      authorization: config.authorization.token,
-    },
-  }).then((res) => {
-    return checkResponse(res);
-  });
+    headers: config.headers,
+  };
+  return request(makeEndpoint(`/cards/${cardId}`), options);
 }
 
 function switchLike(cardId, method) {
-  return fetch(makeEndpoint(`/cards/likes/${cardId}`), {
+  const options = {
     method: method,
-    headers: {
-      authorization: config.authorization.token,
-    },
-  }).then((res) => {
-    return checkResponse(res);
-  });
+    headers: config.headers,
+  };
+  return request(makeEndpoint(`/cards/likes/${cardId}`), options);
 }
 
 export {

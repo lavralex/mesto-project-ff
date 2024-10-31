@@ -17,8 +17,8 @@ function setCloseByEscListener() {
 }
 
 function closeByESC(evt) {
-  const popup = document.querySelector(".popup_is-opened");
   if (evt.key === "Escape") {
+    const popup = document.querySelector(".popup_is-opened");
     closeModal(popup);
   }
 }
@@ -28,11 +28,11 @@ function setCloseByOverlayClickListener(popup) {
 }
 
 function closeByClick(evt) {
-  const popup = document.querySelector(".popup_is-opened");
   if (
     evt.target.classList.contains("popup") ||
     evt.target.classList.contains("popup__close")
   ) {
+    const popup = document.querySelector(".popup_is-opened");
     closeModal(popup);
   }
 }
